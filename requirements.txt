@@ -8,3 +8,4 @@ motor
 aiohttp
 asyncio
 aiofiles
+Flask==3.0.2
