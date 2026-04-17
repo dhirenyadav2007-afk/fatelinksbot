@@ -5,10 +5,10 @@ from datetime import datetime
 from pyrogram import Client
 from pyrogram.enums import ParseMode
 from config import API_HASH, APP_ID, LOGGER, TG_BOT_TOKEN, TG_BOT_WORKERS, PORT, OWNER_ID
-#from plugins import web_server
+from plugins import web_server
 import pyrogram.utils
-#from aiohttp import web
-from plugins.flask_server import keep_alive
+from aiohttp import web
+#from plugins.flask_server import keep_alive
 
 pyrogram.utils.MIN_CHANNEL_ID = -1009147483647
 
@@ -56,14 +56,14 @@ class Bot(Client):
             self.LOGGER(__name__).error(f"Flask failed: {e}")
 
         # Web-response
-        #try:
-            #app = web.AppRunner(await web_server())
-            #await app.setup()
-            #bind_address = "0.0.0.0"
-            #await web.TCPSite(app, bind_address, PORT).start()
-            #self.LOGGER(__name__).info(f"Web server started on {bind_address}:{PORT}")
-        #except Exception as e:
-            #self.LOGGER(__name__).error(f"Failed to start web server: {e}")
+        try:
+            app = web.AppRunner(await web_server())
+            await app.setup()
+            bind_address = "0.0.0.0"
+            await web.TCPSite(app, bind_address, PORT).start()
+            self.LOGGER(__name__).info(f"Web server started on {bind_address}:{PORT}")
+        except Exception as e:
+            self.LOGGER(__name__).error(f"Failed to start web server: {e}")
 
     async def stop(self, *args):
         await super().stop()
